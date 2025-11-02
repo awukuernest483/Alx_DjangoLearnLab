@@ -1,0 +1,39 @@
+# 🐍 Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 🧰 Virtual environments
+venv/
+env/
+.venv/
+
+# 📦 Django stuff
+*.log
+*.pot
+*.pyc
+*.pyo
+*.mo
+*.db
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+static/
+tmp/
+
+# 📁 IDE / Editor settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# 🧪 Testing
+.coverage
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.
