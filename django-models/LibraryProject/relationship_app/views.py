@@ -1,45 +1,29 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib import messages
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test
 
 # -----------------------------
-# Registration view
+# Role check functions
 # -----------------------------
-def register_view(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)  # log the user in immediately
-            messages.success(request, "Registration successful.")
-            return redirect('list_books')  # redirect to books list
-        else:
-            messages.error(request, "Registration failed. Please correct the errors below.")
-    else:
-        form = UserCreationForm()
-    return render(request, 'relationship_app/register.html', {'form': form})
+def is_admin(user):
+    return user.userprofile.role == 'Admin'
+
+def is_librarian(user):
+    return user.userprofile.role == 'Librarian'
+
+def is_member(user):
+    return user.userprofile.role == 'Member'
 
 # -----------------------------
-# Login view
+# Role-specific views
 # -----------------------------
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            messages.success(request, "Login successful.")
-            return redirect('list_books')  # redirect to books list
-        else:
-            messages.error(request, "Invalid username or password.")
-    else:
-        form = AuthenticationForm()
-    return render(request, 'relationship_app/login.html', {'form': form})
+@user_passes_test(is_admin)
+def admin_view(request):
+    return render(request, 'relationship_app/admin_view.html')
 
-# -----------------------------
-# Logout view
-# -----------------------------
-def logout_view(request):
-    logout(request)
-    return render(request, 'relationship_app/logout.html')
+@user_passes_test(is_librarian)
+def librarian_view(request):
+    return render(request, 'relationship_app/librarian_view.html')
+
+@user_passes_test(is_member)
+def member_view(request):
+    return render(request, 'relationship_app/member_view.html')
