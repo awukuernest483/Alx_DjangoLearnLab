@@ -1,10 +1,12 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import list_books, LibraryDetailView, register_view
+from .views import list_books, LibraryDetailView, register_view  # ✅ register view imported
 
 urlpatterns = [
-    # Existing views
+    # Function-based view
     path('books/', list_books, name='list_books'),
+
+    # Class-based view
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
 
     # Authentication views
