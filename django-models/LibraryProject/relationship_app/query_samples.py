@@ -37,12 +37,12 @@ def books_in_library(library_name):
 
 
 # -----------------------------
-# 3. Retrieve the librarian for a library
+# 3. Retrieve the librarian for a library using Librarian.objects.get
 # -----------------------------
 def librarian_for_library(library_name):
     try:
         library = Library.objects.get(name=library_name)
-        librarian = library.librarian  # OneToOne reverse relation
+        librarian = Librarian.objects.get(library=library)  # ✅ direct query
         print(f"Librarian for {library_name}: {librarian.name}")
     except Library.DoesNotExist:
         print(f"No library found with name '{library_name}'.")
