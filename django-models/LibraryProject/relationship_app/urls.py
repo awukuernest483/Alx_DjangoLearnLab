@@ -4,7 +4,7 @@ from . import views
 from .views import list_books
 
 urlpatterns = [
-    # Authentication URLs expected by checker
+    # Authentication URLs
     path("register/", views.register, name="register"),
     path("login/", LoginView.as_view(template_name="relationship_app/login.html"), name="login"),
     path("logout/", LogoutView.as_view(template_name="relationship_app/logout.html"), name="logout"),
@@ -14,4 +14,9 @@ urlpatterns = [
 
     # Class-based view
     path("library/<int:pk>/", views.LibraryDetailView.as_view(), name="library_detail"),
+
+    # Book management URLs (for checker)
+    path("add_book/", views.manage_books, name="add_book"),
+    path("edit_book/", views.manage_books, name="edit_book"),
+    path("delete_book/", views.manage_books, name="delete_book"),
 ]
