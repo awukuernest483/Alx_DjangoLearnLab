@@ -1,20 +1,20 @@
-from django.contrib.auth.decorators import permission_required
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Book
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import DetailView
+from .models import Book, Library
 
-@permission_required('relationship_app.can_add_book')
-def add_book(request):
-    # logic for adding a book
-    return render(request, 'relationship_app/add_book.html')
 
-@permission_required('relationship_app.can_change_book')
-def edit_book(request, pk):
-    book = get_object_or_404(Book, pk=pk)
-    # logic for editing book
-    return render(request, 'relationship_app/edit_book.html', {'book': book})
+# ----------------------------
+# Function-Based View (FBV)
+# ----------------------------
+def list_books(request):
+    books = Book.objects.select_related('author').all()
+    return render(request, "list_books.html", {"books": books})
 
-@permission_required('relationship_app.can_delete_book')
-def delete_book(request, pk):
-    book = get_object_or_404(Book, pk=pk)
-    # logic for deleting book
-    return redirect('book_list')
+
+# ----------------------------
+# Class-Based View (CBV)
+# ----------------------------
+class LibraryDetailView(DetailView):
+    model = Library
+    template_name = "library_detail.html"
+    context_object_name = "library"
