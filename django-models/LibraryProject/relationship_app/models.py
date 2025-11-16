@@ -20,6 +20,12 @@ class Library(models.Model):
     name = models.CharField(max_length=255)
     books = models.ManyToManyField(Book, related_name="libraries")
 
+    class Meta:
+        permissions = [
+            ("can_view_library", "Can view library"),
+            ("can_edit_library", "Can edit library"),
+        ]
+
     def __str__(self):
         return self.name
 
